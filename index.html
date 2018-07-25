@@ -1,0 +1,38 @@
+<head>
+    <style>
+.red-class{
+    background-color: red;
+}
+    </style>
+</head>
+<body></body>
+<footer>
+<script src="https://unpkg.com/mithril@1.1.5/mithril.js"></script>
+<script>
+state = {inputValue: 'big balloon'}
+
+let pointlessRequest = ()=>
+    m.request({
+        method: 'POST',
+        url: "http://127.0.0.1:5000/some-data",
+        data: {who: 'becka'},
+    })
+    .then((result)=>console.log(result))
+
+let View = ()=>m('#container',
+    m('input', {
+        value: state.inputValue,
+        oninput: m.withAttr('value', v=>state.inputValue=v),
+    }),
+    m('button.red-class', {
+        onclick: ()=>state.inputValue = 'BANG!',
+    }, 'BANG'),
+    m('button', {
+        onclick: pointlessRequest,
+    }, 'send pointless request'),
+    m('ul', state.inputValue.split(' ').map((word)=>
+        m('li', `hello ${word.toUpperCase()}`))))
+
+m.mount(document.body, {view: View})
+</script>
+</footer>
